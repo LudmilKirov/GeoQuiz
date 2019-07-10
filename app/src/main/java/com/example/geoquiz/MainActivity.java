@@ -126,6 +126,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
@@ -141,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             //Update the label
             mRemainingTokensTextView.setText
                     ("Remaining Cheat Tokens: " + mRemainingCheatTokens);
-            if (mRemainingCheatTokens == 0) {
+            if (mRemainingCheatTokens <= 0) {
                 //If it goes to 0 unable the cheat button
                 mCheatButton.setEnabled(false);
             }
@@ -161,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_TOKENS, mRemainingCheatTokens);
         savedInstanceState.putBooleanArray(KEY_CHEATER, mIsCheater);
     }
+
 
     //For previous question
     private void previousQuestion() {
@@ -245,32 +275,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "onStart() called");
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume() called");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause() called");
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop() called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() called");
-    }
 }
