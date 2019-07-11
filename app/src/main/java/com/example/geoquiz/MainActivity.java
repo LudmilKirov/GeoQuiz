@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private TextView mRemainingTokensTextView;
 
+
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_oceans, true),
             new Question(R.string.question_mideast, false),
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private boolean[] mIsCheater = new boolean[mQuestionBank.length];
+    private boolean mIsAnswered=true;
     private int mCurrentIndex = 0;
     private int mCurrentScore = 0;
     //You can use max 3 cheat tokens
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             mRemainingCheatTokens = savedInstanceState.getInt(KEY_TOKENS, 3);
             //Save if on the question is used a cheat
             mIsCheater = savedInstanceState.getBooleanArray(KEY_CHEATER);
+            mIsAnswered=savedInstanceState.getBoolean("TOUCHED",true);
         }
 
         mQuestionTextView = findViewById(R.id.question_text_view);
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View l) {
+                mIsAnswered=false;
                 MainActivity.this.checkAnswer(true);
             }
         });
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View l) {
+                mIsAnswered=false;
                 MainActivity.this.checkAnswer(false);
             }
         });
@@ -135,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         Log.d(TAG, "onResume() called");
+
+        if (mRemainingCheatTokens <= 0) {
+                //If it goes to 0 unable the cheat button
+                mCheatButton.setEnabled(false);
+            }
+
+       toggleAnswerButtonsTo(mIsAnswered);
     }
 
     @Override
@@ -170,10 +182,10 @@ public class MainActivity extends AppCompatActivity {
             //Update the label
             mRemainingTokensTextView.setText
                     ("Remaining Cheat Tokens: " + mRemainingCheatTokens);
-            if (mRemainingCheatTokens <= 0) {
+            /*if (mRemainingCheatTokens <= 0) {
                 //If it goes to 0 unable the cheat button
                 mCheatButton.setEnabled(false);
-            }
+            }*/
         }
     }
 
@@ -189,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_SCORE, mCurrentScore);
         savedInstanceState.putInt(KEY_TOKENS, mRemainingCheatTokens);
         savedInstanceState.putBooleanArray(KEY_CHEATER, mIsCheater);
+        savedInstanceState.putBoolean("TOUCHED",mIsAnswered);
     }
 
 
@@ -221,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-
+        mIsAnswered=false;
         toggleAnswerButtonsTo(false);
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId;
