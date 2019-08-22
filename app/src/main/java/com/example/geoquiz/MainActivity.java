@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private TextView mRemainingTokensTextView;
 
-
-    private Question[] mQuestionBank = new Question[] {
+    private Question[] mQuestionBank = new Question[]{
             new Question(R.string.question_oceans, true),
             new Question(R.string.question_mideast, false),
             new Question(R.string.question_africa, false),
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private boolean[] mIsCheater = new boolean[mQuestionBank.length];
-    private boolean mIsAnswered=true;
+    private boolean mIsAnswered = true;
     private int mCurrentIndex = 0;
     private int mCurrentScore = 0;
     //You can use max 3 cheat tokens
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             mRemainingCheatTokens = savedInstanceState.getInt(KEY_TOKENS, 3);
             //Save if on the question is used a cheat
             mIsCheater = savedInstanceState.getBooleanArray(KEY_CHEATER);
-            mIsAnswered=savedInstanceState.getBoolean("TOUCHED",true);
+            mIsAnswered = savedInstanceState.getBoolean("TOUCHED", true);
         }
 
         mQuestionTextView = findViewById(R.id.question_text_view);
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.nextQuestion();
             }
         });
+
         //Label the cheat button with a text and remaining tokens
         mRemainingTokensTextView = findViewById(R.id.cheat_button);
         mRemainingTokensTextView.setText
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View l) {
-                mIsAnswered=false;
+                mIsAnswered = false;
                 MainActivity.this.checkAnswer(true);
             }
         });
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View l) {
-                mIsAnswered=false;
+                mIsAnswered = false;
                 MainActivity.this.checkAnswer(false);
             }
         });
@@ -127,26 +127,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
         updateQuestion();
-
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called");
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
 
         if (mRemainingCheatTokens <= 0) {
-                //If it goes to 0 unable the cheat button
-                mCheatButton.setEnabled(false);
-            }
+            //If it goes to 0 unable the cheat button
+            mCheatButton.setEnabled(false);
+        }
 
-       toggleAnswerButtonsTo(mIsAnswered);
+        toggleAnswerButtonsTo(mIsAnswered);
     }
 
     @Override
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause() called");
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //On save instance,that remember the current question,
     // the answered question,remaining cheat tokens
     // and if the cheat is used on the question
@@ -201,9 +200,8 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_SCORE, mCurrentScore);
         savedInstanceState.putInt(KEY_TOKENS, mRemainingCheatTokens);
         savedInstanceState.putBooleanArray(KEY_CHEATER, mIsCheater);
-        savedInstanceState.putBoolean("TOUCHED",mIsAnswered);
+        savedInstanceState.putBoolean("TOUCHED", mIsAnswered);
     }
-
 
     //For previous question
     private void previousQuestion() {
@@ -215,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateQuestion();
     }
+
     //For next question and to restart the score
     private void nextQuestion() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
@@ -226,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             mCurrentScore = 0;
         }
     }
+
     //Update question method
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-        mIsAnswered=false;
+        mIsAnswered = false;
         toggleAnswerButtonsTo(false);
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId;
@@ -243,16 +243,14 @@ public class MainActivity extends AppCompatActivity {
             //Pop the cheating toast
             messageResId = R.string.judgement_toast;
             //Cheaters doesn't score
-        }
-        else {
+        } else {
             if (userPressedTrue == answerIsTrue) {
                 //Pop the correct toast
                 messageResId = R.string.correct_toast;
                 //Update the right answer that are not cheated
                 mCurrentScore += 1;
                 Log.d(TAG, mCurrentScore + "");
-            }
-            else {
+            } else {
                 //Pop the incorrect toast
                 messageResId = R.string.incorrect_toast;
             }
@@ -269,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showScore() {
         //Calculate the percentage
-        int percentage = (int) (((double)mCurrentScore/mQuestionBank.length)*100);
+        int percentage = (int) (((double) mCurrentScore / mQuestionBank.length) * 100);
         //String for the toast
         String stringScore = "You got " + percentage + "% correct answers";
         //Pop the toast
@@ -281,11 +279,9 @@ public class MainActivity extends AppCompatActivity {
         if (!b) {
             mTrueButton.setEnabled(false);
             mFalseButton.setEnabled(false);
-        }
-        else  {
+        } else {
             mTrueButton.setEnabled(true);
             mFalseButton.setEnabled(true);
         }
     }
-
 }

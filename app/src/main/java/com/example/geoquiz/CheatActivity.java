@@ -22,7 +22,6 @@ public class CheatActivity extends AppCompatActivity {
     private static final String TAG = "CheatActivity";
     private static final String KEY_IS_CHEATER = "cheater";
 
-
     private boolean mAnswerIsTrue;
     private boolean mIsAnswerShown;
     private TextView mAnswerTextView;
@@ -53,7 +52,6 @@ public class CheatActivity extends AppCompatActivity {
         }
     }
 
-
     //To save the state if the answer is shown and if the answer is true
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
@@ -69,7 +67,6 @@ public class CheatActivity extends AppCompatActivity {
     CheatActivity.this.displayAnswer();
     }
 
-
     //Show the answer
     public void displayAnswer(){
         if (mAnswerIsTrue) {
@@ -77,9 +74,9 @@ public class CheatActivity extends AppCompatActivity {
         } else {
             mAnswerTextView.setText(R.string.false_button);
         }
+
         mIsAnswerShown = true;
         setAnswerShownResult(mIsAnswerShown);
-
     }
 
 
